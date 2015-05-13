@@ -28,7 +28,7 @@ You can now use the ```EntityManager``` facade or inject the ```EntityManagerInt
 
 ### Configure
 
-Copy ```config/doctrine.php``` into ```config``` and modify it if necessary.
+Copy ```config/doctrine.php``` into ```config``` and modify according to your needs.
 
 The available configurations are:
 
