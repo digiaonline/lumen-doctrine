@@ -1,6 +1,6 @@
-# lumen-doctrine
+# Lumen Doctrine ORM
 
-Doctrine module for the Lumen PHP framework.
+[Doctrine](http://www.doctrine-project.org/projects/orm.html) module for the [Lumen PHP framework](http://lumen.laravel.com/).
 
 ## Requirements
 
@@ -45,9 +45,9 @@ Run ```php artisan``` and you should see the new commands in the doctrine:* name
 
 ## Contributing
 
-Contributions are most welcome. Please note the following guidelines before submitting pull requests:
+Please note the following guidelines before submitting pull requests:
 
-- Format code according to the [PSR standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+- Use the [PSR-2 coding style](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 
 ## License
 
