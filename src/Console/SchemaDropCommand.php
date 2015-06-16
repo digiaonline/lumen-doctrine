@@ -1,6 +1,8 @@
 <?php namespace Nord\Lumen\Doctrine\Console;
 
-class SchemaDropCommand extends DoctrineCommand
+use Symfony\Component\Console\Input\InputOption;
+
+class SchemaDropCommand extends DoctrineSchemaCommand
 {
 
     /**
@@ -21,10 +23,9 @@ class SchemaDropCommand extends DoctrineCommand
     public function fire()
     {
         $tool     = $this->getSchemaTool();
-        $metadata = $this->getClassMetadataFactory();
+        $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
-        $classes = $metadata->getAllMetadata();
-        $sql     = $tool->getDropSchemaSQL($classes);
+        $sql = $tool->getDropSchemaSQL($metadata);
 
         if (count($sql) === 0) {
             $this->info('Nothing to drop!');
@@ -34,7 +35,7 @@ class SchemaDropCommand extends DoctrineCommand
 
         $this->info('Dropping database schema ...');
 
-        $tool->dropSchema($classes);
+        $tool->dropSchema($metadata);
 
         if ($this->option('sql')) {
             $this->info(implode(';' . PHP_EOL, $sql));
@@ -42,4 +43,16 @@ class SchemaDropCommand extends DoctrineCommand
 
         $this->info('Schema dropped!');
     }
+
+
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['sql', false, InputOption::VALUE_NONE, 'Dumps SQL queries.'],
+        ];
+    }
 }
+

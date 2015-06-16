@@ -1,6 +1,8 @@
 <?php namespace Nord\Lumen\Doctrine\Console;
 
-class SchemaUpdateCommand extends DoctrineCommand
+use Symfony\Component\Console\Input\InputOption;
+
+class SchemaUpdateCommand extends DoctrineSchemaCommand
 {
 
     /**
@@ -20,11 +22,9 @@ class SchemaUpdateCommand extends DoctrineCommand
     public function fire()
     {
         $tool     = $this->getSchemaTool();
-        $metadata = $this->getClassMetadataFactory();
+        $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
-        $classes = $metadata->getAllMetadata();
-
-        $sql = $tool->getUpdateSchemaSql($metadata->getAllMetadata());
+        $sql = $tool->getUpdateSchemaSql($metadata);
 
         if (count($sql) === 0) {
             $this->info('Nothing to update!');
@@ -34,12 +34,23 @@ class SchemaUpdateCommand extends DoctrineCommand
 
         $this->info('Updating database schema ...');
 
-        $tool->updateSchema($classes);
+        $tool->updateSchema($metadata);
 
         if ($this->option('sql')) {
             $this->info(implode(';' . PHP_EOL, $sql));
         }
 
         $this->info('Schema updated!');
+    }
+
+
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['sql', false, InputOption::VALUE_NONE, 'Dumps SQL queries.'],
+        ];
     }
 }

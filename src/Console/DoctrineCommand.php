@@ -1,52 +1,36 @@
 <?php namespace Nord\Lumen\Doctrine\Console;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataFactory;
-use Doctrine\ORM\Tools\SchemaTool;
 use Illuminate\Console\Command;
 
 abstract class DoctrineCommand extends Command
 {
 
     /**
-     * @var SchemaTool
+     * @var EntityManager
      */
-    private $schemaTool;
-
-    /**
-     * @var ClassMetadataFactory
-     */
-    private $classMetadataFactory;
+    private $entityManager;
 
 
     /**
      * DoctrineCommand constructor.
      *
-     * @param SchemaTool           $schemaTool
-     * @param ClassMetadataFactory $classMetadataFactory
+     * @param EntityManager $entityManager
      */
-    public function __construct(SchemaTool $schemaTool, ClassMetadataFactory $classMetadataFactory)
+    public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
 
-        $this->schemaTool           = $schemaTool;
-        $this->classMetadataFactory = $classMetadataFactory;
+        $this->entityManager = $entityManager;
     }
 
 
     /**
-     * @return SchemaTool
+     * @return EntityManager
      */
-    protected function getSchemaTool()
+    protected function getEntityManager()
     {
-        return $this->schemaTool;
-    }
-
-
-    /**
-     * @return ClassMetadataFactory
-     */
-    protected function getClassMetadataFactory()
-    {
-        return $this->classMetadataFactory;
+        return $this->entityManager;
     }
 }

@@ -1,6 +1,8 @@
 <?php namespace Nord\Lumen\Doctrine\Console;
 
-class SchemaCreateCommand extends DoctrineCommand
+use Symfony\Component\Console\Input\InputOption;
+
+class SchemaCreateCommand extends DoctrineSchemaCommand
 {
 
     /**
@@ -21,10 +23,9 @@ class SchemaCreateCommand extends DoctrineCommand
     public function fire()
     {
         $tool     = $this->getSchemaTool();
-        $metadata = $this->getClassMetadataFactory();
+        $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
-        $classes = $metadata->getAllMetadata();
-        $sql     = $tool->getCreateSchemaSql($classes);
+        $sql = $tool->getCreateSchemaSql($metadata);
 
         if (count($sql) === 0) {
             $this->info('Nothing to create!');
@@ -34,12 +35,23 @@ class SchemaCreateCommand extends DoctrineCommand
 
         $this->info('Creating database schema ...');
 
-        $tool->createSchema($classes);
+        $tool->createSchema($metadata);
 
         if ($this->option('sql')) {
             $this->info(implode(';' . PHP_EOL, $sql));
         }
 
         $this->info('Schema created!');
+    }
+
+
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['sql', false, InputOption::VALUE_NONE, 'Dumps SQL queries.'],
+        ];
     }
 }
