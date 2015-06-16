@@ -1,5 +1,6 @@
 <?php namespace Nord\Lumen\Doctrine;
 
+use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -14,9 +15,9 @@ use Laravel\Lumen\Application;
 class DoctrineServiceProvider extends ServiceProvider
 {
 
-    const MAPPING_ANNOTATIONS = 'annotations';
-    const MAPPING_XML = 'xml';
-    const MAPPING_YAML = 'yaml';
+    const METADATA_ANNOTATIONS = 'annotations';
+    const METADATA_XML = 'xml';
+    const METADATA_YAML = 'yaml';
 
 
     /**
@@ -32,17 +33,11 @@ class DoctrineServiceProvider extends ServiceProvider
 
         class_alias(EntityManagerFacade::class, 'EntityManager');
 
-        $this->app->singleton(ClassMetadataFactory::class, function ($app) {
-            /** @var EntityManagerInterface $entityManager */
-            $entityManager = $app[EntityManagerInterface::class];
-
-            return $entityManager->getMetadataFactory();
-        });
-
         $this->commands([
+            'Nord\Lumen\Doctrine\Console\GenerateProxiesCommand',
             'Nord\Lumen\Doctrine\Console\SchemaCreateCommand',
-            'Nord\Lumen\Doctrine\Console\SchemaUpdateCommand',
             'Nord\Lumen\Doctrine\Console\SchemaDropCommand',
+            'Nord\Lumen\Doctrine\Console\SchemaUpdateCommand',
         ]);
     }
 
@@ -50,34 +45,42 @@ class DoctrineServiceProvider extends ServiceProvider
     /**
      * @param Application $app
      *
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
+     * @throws Exception
      * @throws \Doctrine\ORM\ORMException
      */
     protected function createEntityManager(Application $app)
     {
+        if (!isset($app['config']['doctrine'])) {
+            throw new Exception('Doctrine configuration not registered.');
+        }
+
         $config = $app['config']['doctrine'];
 
-        $connectionConfig = $this->createConnectionConfig($app['config']['database']);
+        if (!isset($app['config']['database'])) {
+            throw new Exception('Database configuration not registered.');
+        }
 
-        // TODO: support caching
-        $metadataConfig = $this->createMetadataConfiguration(
-            array_get($config, 'mapping', self::MAPPING_XML),
-            array_get($config, 'paths', [ base_path('app/Entities') ]),
+        $connectionConfig = $this->createConnectionConfig($config, $app['config']['database']);
+
+        $metadataConfiguration = $this->createMetadataConfiguration(
+            array_get($config, 'mapping', self::METADATA_ANNOTATIONS),
+            array_get($config, 'paths', [base_path('app/Entities')]),
             $app['config']['app.debug'],
             array_get($config, 'proxy.directory'),
             null,
             array_get($config, 'simple_annotations', false)
         );
 
-        $this->configureMetadata($metadataConfig, $config);
+        $this->configureMetadataConfiguration($metadataConfiguration, $config);
 
         $eventManager = new EventManager();
 
-        $entityManager = EntityManager::create($connectionConfig, $metadataConfig, $eventManager);
+        $this->configureEventManager($config, $eventManager);
 
-        if (isset( $config['types'] )) {
-            $this->registerTypes($config['types'], $entityManager);
-        }
+        $entityManager = EntityManager::create($connectionConfig, $metadataConfiguration, $eventManager);
+
+        $this->configureEntityManager($config, $entityManager);
 
         return $entityManager;
     }
@@ -85,15 +88,21 @@ class DoctrineServiceProvider extends ServiceProvider
 
     /**
      * @param array $config
+     * @param array $databaseConfig
      *
      * @return array
+     * @throws Exception
      */
-    protected function createConnectionConfig(array $config)
+    protected function createConnectionConfig(array $config, array $databaseConfig)
     {
-        $default    = $config['default'];
-        $connection = $config['connections'][$default];
+        $connection       = array_get($config, 'connection', $databaseConfig['default']);
+        $connectionConfig = array_get($databaseConfig['connections'], $connection);
 
-        return $this->normalizeConnectionConfig($connection);
+        if ($connectionConfig === null) {
+            throw new Exception("Configuration for connection '$connection' not found.");
+        }
+
+        return $this->normalizeConnectionConfig($connectionConfig);
     }
 
 
@@ -111,7 +120,7 @@ class DoctrineServiceProvider extends ServiceProvider
             'sqlsrv' => 'pdo_sqlsrv',
         ];
 
-        if ( ! isset( $driverMap[$config['driver']] )) {
+        if (!isset($driverMap[$config['driver']])) {
             throw new Exception("Driver '{$config['driver']}' is not supported.");
         }
 
@@ -122,20 +131,20 @@ class DoctrineServiceProvider extends ServiceProvider
             'user'     => $config['username'],
             'password' => $config['password'],
             'charset'  => $config['charset'],
-            'prefix'   => array_get($config, 'prefix')
+            'prefix'   => array_get($config, 'prefix'),
         ];
     }
 
 
     /**
-     * @param $type
-     * @param $paths
-     * @param $isDevMode
-     * @param $proxyDir
-     * @param $cache
-     * @param $useSimpleAnnotationReader
+     * @param string $type
+     * @param array  $paths
+     * @param bool   $isDevMode
+     * @param string $proxyDir
+     * @param Cache  $cache
+     * @param bool   $useSimpleAnnotationReader
      *
-     * @return \Doctrine\ORM\Configuration
+     * @return Configuration
      * @throws \Exception
      */
     protected function createMetadataConfiguration(
@@ -144,15 +153,15 @@ class DoctrineServiceProvider extends ServiceProvider
         $isDevMode,
         $proxyDir,
         $cache,
-        $useSimpleAnnotationReader
+        $useSimpleAnnotationReader = true
     ) {
         switch ($type) {
-            case self::MAPPING_ANNOTATIONS:
+            case self::METADATA_ANNOTATIONS:
                 return Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache,
                     $useSimpleAnnotationReader);
-            case self::MAPPING_XML:
+            case self::METADATA_XML:
                 return Setup::createXMLMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache);
-            case self::MAPPING_YAML:
+            case self::METADATA_YAML:
                 return Setup::createYAMLMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache);
             default:
                 throw new Exception("Metadata type '$type' is not supported.");
@@ -161,43 +170,74 @@ class DoctrineServiceProvider extends ServiceProvider
 
 
     /**
-     * @param \Doctrine\ORM\Configuration $metadataConfig
+     * @param \Doctrine\ORM\Configuration $configuration
      * @param array                       $config
      *
      * @throws \Doctrine\ORM\ORMException
      */
-    protected function configureMetadata(
-        Configuration $metadataConfig,
+    protected function configureMetadataConfiguration(
+        Configuration $configuration,
         array $config
     ) {
-        if (isset( $config['proxy'] ) && isset( $config['proxy']['auto_generate'] )) {
-            $metadataConfig->setAutoGenerateProxyClasses($config['proxy']['auto_generate']);
+        if (isset($config['filters'])) {
+            foreach ($config['filters'] as $name => $filter) {
+                $configuration->addFilter($name, $filter['class']);
+            }
         }
-        if (isset( $config['proxy'] ) && isset( $config['proxy']['namespace'] )) {
-            $metadataConfig->setProxyNamespace($config['proxy']['namespace']);
+        if (isset($config['logger'])) {
+            $configuration->setSQLLogger($config['logger']);
         }
-        if (isset( $config['repository'] )) {
-            $metadataConfig->setDefaultRepositoryClassName($config['repository']);
+        if (isset($config['proxy']) && isset($config['proxy']['auto_generate'])) {
+            $configuration->setAutoGenerateProxyClasses($config['proxy']['auto_generate']);
         }
-        if (isset( $config['logger'] )) {
-            $metadataConfig->setSQLLogger($config['logger']);
+        if (isset($config['proxy']) && isset($config['proxy']['namespace'])) {
+            $configuration->setProxyNamespace($config['proxy']['namespace']);
+        }
+        if (isset($config['repository'])) {
+            $configuration->setDefaultRepositoryClassName($config['repository']);
+        }
+        $namingStrategy = array_get($config, 'naming_strategy', NamingStrategy::class);
+        $configuration->setNamingStrategy(new $namingStrategy);
+    }
+
+
+    /**
+     * @param array        $config
+     * @param EventManager $eventManager
+     */
+    protected function configureEventManager(array $config, EventManager $eventManager)
+    {
+        if (isset($config['event_listeners'])) {
+            foreach ($config['event_listeners'] as $name => $listener) {
+                $eventManager->addEventListener($listener['events'], new $listener['class']);
+            }
         }
     }
 
 
     /**
-     * @param array                       $types
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     *
-     * @throws \Doctrine\DBAL\DBALException
+     * @param array         $config
+     * @param EntityManager $entityManager
      */
-    protected function registerTypes(array $types, EntityManager $entityManager)
+    protected function configureEntityManager(array $config, EntityManager $entityManager)
     {
-        $databasePlatform = $entityManager->getConnection()->getDatabasePlatform();
+        if (isset($config['filters'])) {
+            foreach ($config['filters'] as $name => $filter) {
+                if (!array_get($filter, 'enabled', false)) {
+                    continue;
+                }
 
-        foreach ($types as $name => $className) {
-            Type::addType($name, $className);
-            $databasePlatform->registerDoctrineTypeMapping('db_' . $name, $name);
+                $entityManager->getFilters()->enable($name);
+            }
+        }
+
+        if (isset($config['types'])) {
+            $databasePlatform = $entityManager->getConnection()->getDatabasePlatform();
+
+            foreach ($config['types'] as $name => $className) {
+                Type::addType($name, $className);
+                $databasePlatform->registerDoctrineTypeMapping('db_' . $name, $name);
+            }
         }
     }
 }
