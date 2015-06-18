@@ -1,8 +1,8 @@
-<?php namespace Nord\Lumen\Doctrine;
+<?php namespace Nord\Lumen\Doctrine\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class EntityManagerFacade extends Facade
+class EntityManager extends Facade
 {
 
     /**
@@ -10,6 +10,6 @@ class EntityManagerFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'Doctrine\ORM\EntityManager';
+        return 'Doctrine\ORM\EntityManagerInterface';
     }
 }
