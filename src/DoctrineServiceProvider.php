@@ -280,7 +280,7 @@ class DoctrineServiceProvider extends ServiceProvider
 
             foreach ($doctrineConfig['types'] as $name => $className) {
                 Type::addType($name, $className);
-                $databasePlatform->registerDoctrineTypeMapping('db_' . $name, $name);
+                $databasePlatform->registerDoctrineTypeMapping($name, $name);
             }
         }
     }
