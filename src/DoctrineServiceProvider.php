@@ -1,4 +1,4 @@
-<?php namespace Nord\Lumen\Doctrine;
+<?php namespace Nord\Lumen\Doctrine\ORM;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\EventManager;
@@ -52,7 +52,7 @@ class DoctrineServiceProvider extends ServiceProvider
      */
     protected function registerFacades()
     {
-        class_alias('Nord\Lumen\Doctrine\Facades\EntityManager', 'EntityManager');
+        class_alias('Nord\Lumen\Doctrine\ORM\Facades\EntityManager', 'EntityManager');
     }
 
 
@@ -62,10 +62,10 @@ class DoctrineServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            'Nord\Lumen\Doctrine\Console\GenerateProxiesCommand',
-            'Nord\Lumen\Doctrine\Console\SchemaCreateCommand',
-            'Nord\Lumen\Doctrine\Console\SchemaDropCommand',
-            'Nord\Lumen\Doctrine\Console\SchemaUpdateCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\GenerateProxiesCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\SchemaCreateCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\SchemaDropCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\SchemaUpdateCommand',
         ]);
     }
 
@@ -236,7 +236,7 @@ class DoctrineServiceProvider extends ServiceProvider
             $configuration->setDefaultRepositoryClassName($doctrineConfig['repository']);
         }
 
-        $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\NamingStrategy');
+        $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
         $configuration->setNamingStrategy(new $namingStrategy);
     }
 
