@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Nord\\Lumen\\Doctrine\\": "src"
+            "Nord\\Lumen\\Doctrine\\ORM\\": "src"
         }
     },
     "require-dev": {
