@@ -2,10 +2,15 @@
     "name": "nordsoftware/lumen-doctrine",
     "description": "Doctrine module for the Lumen PHP framework.",
     "license": "MIT",
+    "keywords": ["laravel", "lumen", "doctrine", "orm", "mysql"],
     "authors": [
         {
             "name": "Christoffer Niska",
             "email": "christofferniska@gmail.com"
+        },
+        {
+            "name": "Danijel Maricic",
+            "email": "danijelmaricic@gmail.com"
         }
     ],
     "minimum-stability": "dev",
