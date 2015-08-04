@@ -1,8 +1,8 @@
-<?php namespace Nord\Lumen\Doctrine\EventListeners;
+<?php namespace Nord\Lumen\Doctrine\ORM\EventListeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Jenssegers\Date\Date;
-use Nord\Lumen\Doctrine\Traits\SoftDeletes;
+use Nord\Lumen\Doctrine\ORM\Traits\SoftDeletes;
 
 class SoftDeletesListener
 {

@@ -1,4 +1,4 @@
-<?php namespace Nord\Lumen\Doctrine\Facades;
+<?php namespace Nord\Lumen\Doctrine\ORM\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

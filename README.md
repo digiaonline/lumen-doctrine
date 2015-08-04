@@ -21,7 +21,7 @@ composer require nordsoftware/lumen-doctrine
 Add the following line to ```bootstrap/app.php```:
 
 ```php
-$app->register('Nord\Lumen\Doctrine\DoctrineServiceProvider');
+$app->register('Nord\Lumen\Doctrine\ORM\DoctrineServiceProvider');
 ```
 
 You can now use the ```EntityManager``` facade or inject the ```EntityManagerInterface``` where needed.

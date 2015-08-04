@@ -1,4 +1,4 @@
-<?php namespace Nord\Lumen\Doctrine\Console;
+<?php namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 
