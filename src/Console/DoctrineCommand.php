@@ -1,7 +1,6 @@
 <?php namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Illuminate\Console\Command;
 
 abstract class DoctrineCommand extends Command
