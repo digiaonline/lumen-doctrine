@@ -1,4 +1,4 @@
-<?php namespace Nord\Lumen\Doctrine\Traits;
+<?php namespace Nord\Lumen\Doctrine\ORM\Traits;
 
 use Doctrine\ORM\Mapping AS ORM;
 use Jenssegers\Date\Date;

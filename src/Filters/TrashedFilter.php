@@ -1,8 +1,8 @@
-<?php namespace Nord\Lumen\Doctrine\Filters;
+<?php namespace Nord\Lumen\Doctrine\ORM\Filters;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use Nord\Lumen\Doctrine\Traits\SoftDeletes;
+use Nord\Lumen\Doctrine\ORM\Traits\SoftDeletes;
 
 class TrashedFilter extends SQLFilter
 {

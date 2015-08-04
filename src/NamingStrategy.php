@@ -1,4 +1,4 @@
-<?php namespace Nord\Lumen\Doctrine;
+<?php namespace Nord\Lumen\Doctrine\ORM;
 
 use Doctrine\ORM\Mapping\NamingStrategy as NamingStrategyContract;
 
