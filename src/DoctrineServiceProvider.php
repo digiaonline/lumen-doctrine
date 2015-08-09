@@ -166,6 +166,7 @@ class DoctrineServiceProvider extends ServiceProvider
             'user'     => $config['username'],
             'password' => $config['password'],
             'charset'  => $config['charset'],
+            'port'     => $config['port'],
             'prefix'   => array_get($config, 'prefix'),
         ];
     }
