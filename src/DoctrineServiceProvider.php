@@ -75,6 +75,7 @@ class DoctrineServiceProvider extends ServiceProvider
             'Nord\Lumen\Doctrine\ORM\Console\SchemaCreateCommand',
             'Nord\Lumen\Doctrine\ORM\Console\SchemaDropCommand',
             'Nord\Lumen\Doctrine\ORM\Console\SchemaUpdateCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\FixturesLoadCommand',
         ]);
     }
 
