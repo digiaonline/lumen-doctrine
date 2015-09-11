@@ -11,13 +11,22 @@ use Exception;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Nord\Lumen\Doctrine\ORM\Configuration\ConnectionConfiguration;
+use Nord\Lumen\Doctrine\ORM\Configuration\SqlAdapter;
+use Nord\Lumen\Doctrine\ORM\Configuration\SqliteAdapter;
+use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter;
 
 class DoctrineServiceProvider extends ServiceProvider
 {
 
     const METADATA_ANNOTATIONS = 'annotations';
-    const METADATA_XML = 'xml';
-    const METADATA_YAML = 'yaml';
+    const METADATA_XML         = 'xml';
+    const METADATA_YAML        = 'yaml';
+
+    const DRIVER_MYSQL  = 'mysql';
+    const DRIVER_PGSQL  = 'pgsql';
+    const DRIVER_SQLSRV = 'sqlsrv';
+    const DRIVER_SQLITE = 'sqlite';
 
 
     /**
@@ -66,6 +75,7 @@ class DoctrineServiceProvider extends ServiceProvider
             'Nord\Lumen\Doctrine\ORM\Console\SchemaCreateCommand',
             'Nord\Lumen\Doctrine\ORM\Console\SchemaDropCommand',
             'Nord\Lumen\Doctrine\ORM\Console\SchemaUpdateCommand',
+            'Nord\Lumen\Doctrine\ORM\Console\FixturesLoadCommand',
         ]);
     }
 
@@ -149,25 +159,32 @@ class DoctrineServiceProvider extends ServiceProvider
      */
     protected function normalizeConnectionConfig(array $config)
     {
-        $driverMap = [
-            'mysql'  => 'pdo_mysql',
-            'pgsql'  => 'pdo_pgsql',
-            'sqlsrv' => 'pdo_sqlsrv',
-        ];
+        $adapter = $this->createConfigurationAdapter($config['driver']);
 
-        if (!isset($driverMap[$config['driver']])) {
-            throw new Exception("Driver '{$config['driver']}' is not supported.");
+        $configuration = new ConnectionConfiguration($adapter);
+
+        return $configuration->map($config);
+    }
+
+
+    /**
+     * @param string $driver
+     *
+     * @return ConfigurationAdapter
+     * @throws Exception
+     */
+    protected function createConfigurationAdapter($driver)
+    {
+        switch ($driver) {
+            case self::DRIVER_MYSQL:
+            case self::DRIVER_PGSQL:
+            case self::DRIVER_SQLSRV:
+                return new SqlAdapter();
+            case self::DRIVER_SQLITE:
+                return new SqliteAdapter();
+            default:
+                throw new Exception("Driver '{$driver}' is not supported.");
         }
-
-        return [
-            'driver'   => $driverMap[$config['driver']],
-            'host'     => $config['host'],
-            'dbname'   => $config['database'],
-            'user'     => $config['username'],
-            'password' => $config['password'],
-            'charset'  => $config['charset'],
-            'prefix'   => array_get($config, 'prefix'),
-        ];
     }
 
 
@@ -210,7 +227,7 @@ class DoctrineServiceProvider extends ServiceProvider
      * Configures the metadata configuration instance.
      *
      * @param Configuration $configuration
-     * @param array                       $doctrineConfig
+     * @param array         $doctrineConfig
      *
      * @throws ORMException
      */
