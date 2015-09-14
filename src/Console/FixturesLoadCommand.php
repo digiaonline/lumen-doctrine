@@ -34,7 +34,7 @@ class FixturesLoadCommand extends DoctrineCommand
 
         $purger   = new ORMPurger();
         $executor = new ORMExecutor($this->getEntityManager(), $purger);
-        $executor->execute($fixtures);
+        $executor->execute($fixtures, $this->option('append'));
 
         $this->info('Fixtures loaded!');
     }
@@ -46,7 +46,8 @@ class FixturesLoadCommand extends DoctrineCommand
     protected function getOptions()
     {
         return [
-            ['path', false, InputOption::VALUE_REQUIRED, 'Path to fixtures.'],
+            ['path', null, InputOption::VALUE_REQUIRED, 'Path to fixtures.'],
+            ['append', true, InputOption::VALUE_OPTIONAL, 'Whether to append fixtures and preserve the database.'],
         ];
     }
 }
