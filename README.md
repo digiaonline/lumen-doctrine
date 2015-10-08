@@ -40,6 +40,7 @@ The available configurations are:
 - **proxy** - Proxy configuration
 - **repository** - Repository class to use
 - **logger** - Logger class to use
+- **naming_strategy** - Define a naming strategy for the tables. Set explicit to 'false' to disable it.
 
 ### Run Artisan
 
