@@ -38,6 +38,7 @@ The available configurations are:
 - **proxy** - Proxy configuration
 - **repository** - Repository class to use
 - **logger** - Logger class to use
+- **driverFileExtension** - Specifies the drivers file extension when loading mappings.
 
 ### Run Artisan
 
