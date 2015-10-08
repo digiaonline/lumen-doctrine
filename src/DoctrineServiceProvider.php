@@ -7,6 +7,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\Mapping\Driver\SimpleYamlDriver;
 use Exception;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\Container;
@@ -22,6 +23,7 @@ class DoctrineServiceProvider extends ServiceProvider
     const METADATA_ANNOTATIONS = 'annotations';
     const METADATA_XML         = 'xml';
     const METADATA_YAML        = 'yaml';
+    const METADATA_SIMPLEYAML  = 'simpleyaml';
 
     const DRIVER_MYSQL  = 'mysql';
     const DRIVER_PGSQL  = 'pgsql';
@@ -102,6 +104,7 @@ class DoctrineServiceProvider extends ServiceProvider
         $doctrineConfig = $config['doctrine'];
         $databaseConfig = $config['database'];
 
+
         $connectionConfig = $this->createConnectionConfig($doctrineConfig, $databaseConfig);
 
         $type              = array_get($doctrineConfig, 'mapping', self::METADATA_ANNOTATIONS);
@@ -109,9 +112,10 @@ class DoctrineServiceProvider extends ServiceProvider
         $debug             = $config['app.debug'];
         $proxyDir          = array_get($doctrineConfig, 'proxy.directory');
         $simpleAnnotations = array_get($doctrineConfig, 'simple_annotations', false);
+        $yamlpaths         = array_get($doctrineConfig, 'yamlpaths', false);
 
         $metadataConfiguration = $this->createMetadataConfiguration($type, $paths, $debug, $proxyDir, null,
-            $simpleAnnotations);
+            $simpleAnnotations, $yamlpaths);
 
         $this->configureMetadataConfiguration($metadataConfiguration, $doctrineConfig);
 
@@ -207,16 +211,31 @@ class DoctrineServiceProvider extends ServiceProvider
         $isDevMode,
         $proxyDir,
         $cache,
-        $useSimpleAnnotationReader = true
+        $useSimpleAnnotationReader = true,
+        $yamlpaths = false
     ) {
         switch ($type) {
+            case self::METADATA_SIMPLEYAML:
+
+                if(is_array($yamlpaths)) {
+                
+                    $config = Setup::createConfiguration($isDevMode, $proxyDir, $cache);
+                    $config->setMetadataDriverImpl(new \Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver($yamlpaths));
+
+                    return $config;
+                }
+
+                throw new Exception("'yamlpaths' configuration is missing.");
+
             case self::METADATA_ANNOTATIONS:
-                return Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache,
-                    $useSimpleAnnotationReader);
+                return Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+            
             case self::METADATA_XML:
                 return Setup::createXMLMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache);
+            
             case self::METADATA_YAML:
                 return Setup::createYAMLMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache);
+            
             default:
                 throw new Exception("Metadata type '$type' is not supported.");
         }
@@ -254,7 +273,15 @@ class DoctrineServiceProvider extends ServiceProvider
         }
 
         $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
-        $configuration->setNamingStrategy(new $namingStrategy);
+        
+        if($namingStrategy !== false) 
+            $configuration->setNamingStrategy(new $namingStrategy);
+
+        // set file extension
+        if(isset($doctrineConfig['mappingextension'])) {
+            $driver = $configuration->getMetadataDriverImpl()->getLocator();
+            $driver->setFileExtension($doctrineConfig['mappingextension']);
+        }
     }
 
 

@@ -33,11 +33,14 @@ Copy ```config/doctrine.php``` into ```config``` and modify according to your ne
 The available configurations are:
 
 - **mapping** - Mapping driver to use (xml, yaml or annotations), defaults to xml
+- **mappingextension** - Configures the file extension for mapping files
 - **paths** - Paths to entity mappings, defaults to an empty array
+- **yamlpaths** - Paths to entity mappings including namespace identifiers
 - **types** - Custom Doctrine types to register, defaults to an empty array
 - **proxy** - Proxy configuration
 - **repository** - Repository class to use
 - **logger** - Logger class to use
+- **naming_strategy** - Define a naming strategy for the tables. Set explicit to 'false' to disable it.
 
 ### Run Artisan
 

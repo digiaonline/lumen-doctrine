@@ -1,5 +1,5 @@
 {
-    "name": "nordsoftware/lumen-doctrine",
+    "name": "Nord/lumen-doctrine",
     "description": "Doctrine module for the Lumen PHP framework.",
     "license": "MIT",
     "keywords": ["laravel", "lumen", "doctrine", "orm", "mysql"],
@@ -11,11 +11,15 @@
         {
             "name": "Danijel Maricic",
             "email": "danijelmaricic@gmail.com"
+        },
+        {
+            "name": "Andy Schwarz",
+            "email": "flyandi@yahoo.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-        "doctrine/orm": "~2.6@dev"
+        "doctrine/orm": "2.5"
     },
     "autoload": {
         "psr-4": {
