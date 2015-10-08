@@ -4,6 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Naming Strategy
+    |--------------------------------------------------------------------------
+    |
+    | TODO: Allows to set a naming strategy. Default is a simple naming strategy 
+    |       if not explicit defined (vendor/Nord/lumen-doctrine/src/NamingStrategy.php)
+    |
+    */
+
+    // 'naming_strategy' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Mapping driver to use
     |--------------------------------------------------------------------------
     |
@@ -12,7 +24,6 @@ return [
     */
 
     'mapping'    => 'xml',
-
 
     //'mappingextension' => '.yml',
 

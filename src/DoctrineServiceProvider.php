@@ -273,7 +273,9 @@ class DoctrineServiceProvider extends ServiceProvider
         }
 
         $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
-        $configuration->setNamingStrategy(new $namingStrategy);
+        
+        if($namingStrategy !== false) 
+            $configuration->setNamingStrategy(new $namingStrategy);
 
         // set file extension
         if(isset($doctrineConfig['mappingextension'])) {
