@@ -13,9 +13,8 @@
             "email": "danijelmaricic@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "doctrine/orm": "~2.6@dev"
+        "doctrine/orm": "~2.5"
     },
     "autoload": {
         "psr-4": {
