@@ -19,6 +19,8 @@ use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter;
 class DoctrineServiceProvider extends ServiceProvider
 {
 
+    const CONFIG_KEY = 'doctrine';
+
     const METADATA_ANNOTATIONS = 'annotations';
     const METADATA_XML         = 'xml';
     const METADATA_YAML        = 'yaml';
@@ -34,7 +36,9 @@ class DoctrineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerContainerBindings($this->app, $this->app['config']);
+        $this->app->configure(self::CONFIG_KEY);
+
+        $this->registerBindings($this->app, $this->app['config']);
         $this->registerFacades();
         $this->registerCommands();
     }
@@ -46,7 +50,7 @@ class DoctrineServiceProvider extends ServiceProvider
      * @param Container        $container
      * @param ConfigRepository $config
      */
-    protected function registerContainerBindings(Container $container, ConfigRepository $config)
+    protected function registerBindings(Container $container, ConfigRepository $config)
     {
         $container->singleton('Doctrine\ORM\EntityManager', function () use ($config) {
             return $this->createEntityManager($config);
