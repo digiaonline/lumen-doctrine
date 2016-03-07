@@ -1,7 +1,7 @@
 <?php namespace Nord\Lumen\Doctrine\ORM\Traits;
 
 use Doctrine\ORM\Mapping AS ORM;
-use Jenssegers\Date\Date;
+use Carbon\Carbon;
 
 trait SoftDeletes
 {
@@ -9,7 +9,7 @@ trait SoftDeletes
     /**
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      *
-     * @var Date
+     * @var Carbon
      */
     private $deletedAt;
 
@@ -23,7 +23,7 @@ trait SoftDeletes
             return;
         }
 
-        $this->deletedAt = Date::now();
+        $this->deletedAt = Carbon::now();
     }
 
 
@@ -41,7 +41,7 @@ trait SoftDeletes
      */
     public function getDeletedAtTimestamp()
     {
-        return $this->deletedAt instanceof Date ? $this->deletedAt->getTimestamp() : null;
+        return $this->deletedAt instanceof Carbon ? $this->deletedAt->getTimestamp() : null;
     }
 
 
