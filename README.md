@@ -1,22 +1,28 @@
 # Lumen Doctrine ORM
 
+[![Code Climate](https://codeclimate.com/github/nordsoftware/lumen-doctrine/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/lumen-doctrine)
+[![Latest Stable Version](https://poser.pugx.org/nordsoftware/lumen-doctrine/version)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
+[![Total Downloads](https://poser.pugx.org/nordsoftware/lumen-doctrine/downloads)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
+[![License](https://poser.pugx.org/nordsoftware/lumen-doctrine/license)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
+
 [Doctrine](http://www.doctrine-project.org/projects/orm.html) module for the [Lumen PHP framework](http://lumen.laravel.com/).
 
 ## Requirements
 
-- PHP >= 5.5
+- PHP 5.5 or newer
+- [Composer](http://getcomposer.org)
 
 ## Usage
 
-### Install through Composer
+### Installation
 
-Run the following command to install the package:
+Run the following command to install the package through Composer:
 
 ```sh
 composer require nordsoftware/lumen-doctrine
 ```
 
-### Register the Service Provider
+### Bootstrapping
 
 Add the following line to ```bootstrap/app.php```:
 
@@ -45,9 +51,7 @@ Run ```php artisan``` and you should see the new commands in the doctrine:* name
 
 ## Contributing
 
-Please note the following guidelines before submitting pull requests:
-
-- Use the [PSR-2 coding style](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+Please read the [guidelines](.github/CONTRIBUTING.md).
 
 ## License
 
