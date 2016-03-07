@@ -1,35 +1,22 @@
 <?php namespace Nord\Lumen\Doctrine\ORM\Traits;
 
 use Doctrine\ORM\Mapping AS ORM;
-use Jenssegers\Date\Date;
-use JMS\Serializer\Annotation as DTO;
+use Carbon\Carbon;
 
 trait Timestamps
 {
 
     /**
-     * @DTO\Expose
-     * @DTO\Type("integer")
-     * @DTO\Accessor(getter="getCreatedAtTimestamp")
-     * @DTO\SerializedName("created_at")
-     * @DTO\ReadOnly
-     *
      * @ORM\Column(type="datetime", name="created_at")
      *
-     * @var Date
+     * @var Carbon
      */
     private $createdAt;
 
     /**
-     * @DTO\Expose
-     * @DTO\Type("integer")
-     * @DTO\Accessor(getter="getUpdatedAtTimestamp")
-     * @DTO\SerializedName("updated_at")
-     * @DTO\ReadOnly
-     *
      * @ORM\Column(type="datetime", name="updated_at", nullable=true)
      *
-     * @var Date
+     * @var Carbon
      */
     private $updatedAt;
 
@@ -39,7 +26,7 @@ trait Timestamps
      */
     public function prePersist()
     {
-        $this->createdAt = Date::now();
+        $this->createdAt = Carbon::now();
     }
 
 
@@ -48,12 +35,12 @@ trait Timestamps
      */
     public function preUpdate()
     {
-        $this->updatedAt = Date::now();
+        $this->updatedAt = Carbon::now();
     }
 
 
     /**
-     * @return Date
+     * @return Carbon
      */
     public function getCreatedAt()
     {
@@ -62,7 +49,7 @@ trait Timestamps
 
 
     /**
-     * @return Date
+     * @return Carbon
      */
     public function getUpdatedAt()
     {
@@ -86,6 +73,6 @@ trait Timestamps
      */
     public function getUpdatedAtTimestamp()
     {
-        return $this->updatedAt instanceof Date ? $this->updatedAt->getTimestamp() : null;
+        return $this->updatedAt instanceof Carbon ? $this->updatedAt->getTimestamp() : null;
     }
 }
