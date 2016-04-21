@@ -3,7 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/nordsoftware/lumen-doctrine/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/lumen-doctrine)
 [![Latest Stable Version](https://poser.pugx.org/nordsoftware/lumen-doctrine/version)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
 [![Total Downloads](https://poser.pugx.org/nordsoftware/lumen-doctrine/downloads)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
-[![License](https://poser.pugx.org/nordsoftware/lumen-doctrine/license)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [Doctrine](http://www.doctrine-project.org/projects/orm.html) module for the [Lumen PHP framework](http://lumen.laravel.com/).
 
