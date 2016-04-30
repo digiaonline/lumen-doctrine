@@ -22,6 +22,10 @@
         }
     },
     "require-dev": {
-        "laravel/lumen-framework": "~5.1@dev"
+        "laravel/lumen-framework": "~5.1@dev",
+        "codeception/codeception": "^2.1",
+        "codeception/specify": "^0.4.3",
+        "codeception/verify": "^0.3.0",
+        "satooshi/php-coveralls": "^1.0"
     }
 }
