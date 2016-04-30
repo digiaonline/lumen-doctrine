@@ -53,7 +53,7 @@ class SqlAdapterTest extends \PHPUnit_Framework_TestCase
         });
     }
 
-    public function testMapReturnCorrectConfiguration()
+    public function testMapReturnsCorrectConfiguration()
     {
         $this->specify('verify SqlAdapter::map mathod returns correct configuration', function() {
             verify($this->sqlAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
