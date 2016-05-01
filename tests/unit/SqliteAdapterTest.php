@@ -27,6 +27,9 @@ class SqliteAdapterTest extends \Codeception\TestCase\Test
      */
     private $dummyConfiguration;
 
+    /**
+     * @inheritdoc
+     */
     protected function setup()
     {
         $this->sqliteAdapter = new SqliteAdapter();
@@ -34,6 +37,9 @@ class SqliteAdapterTest extends \Codeception\TestCase\Test
         $this->fillExpectedConfigurationArray();
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function tearDown()
     {
         $this->sqliteAdapter = null;
@@ -41,7 +47,7 @@ class SqliteAdapterTest extends \Codeception\TestCase\Test
 
     public function testAssertInstanceOfSqliteAdapter()
     {
-        $this->specify('verify sqlliteAdapter is instance of SqliteAdapter', function() {
+        $this->specify('verify sqlliteAdapter is instance of SqliteAdapter', function () {
             verify($this->sqliteAdapter)->isInstanceOf(SqliteAdapter::class);
         });
     }
@@ -50,14 +56,14 @@ class SqliteAdapterTest extends \Codeception\TestCase\Test
     {
         $this->fillExpectedConfigurationArray();
 
-        $this->specify('verify SqliteAdapter::map method returns correct configuration', function() {
+        $this->specify('SqliteAdapter::map method returns correct configuration', function () {
             verify($this->sqliteAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
         });
     }
 
     public function testMapReturnsCorrectConfigurationWithInMemoryDatabase()
     {
-        $this->specify('verify SqliteAdapter::map method returns correct configuration with in memory database', function() {
+        $this->specify('SqliteAdapter::map method returns correct configuration with in memory database', function () {
             verify($this->sqliteAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
         });
     }

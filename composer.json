@@ -21,11 +21,17 @@
             "Nord\\Lumen\\Doctrine\\ORM\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Nord\\Lumen\\Doctrine\\ORM\\Test\\": "tests"
+        }
+    },
     "require-dev": {
         "laravel/lumen-framework": "~5.1@dev",
         "codeception/codeception": "^2.1",
         "codeception/specify": "^0.4.3",
         "codeception/verify": "^0.3.0",
-        "satooshi/php-coveralls": "^1.0"
+        "satooshi/php-coveralls": "^1.0",
+        "squizlabs/php_codesniffer": "2.*"
     }
 }

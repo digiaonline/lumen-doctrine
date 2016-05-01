@@ -4,8 +4,12 @@ namespace Nord\Lumen\Doctrine\ORM\Test;
 
 use \Nord\Lumen\Doctrine\ORM\Filters\TrashedFilter;
 use \Doctrine\ORM\EntityManagerInterface;
-use \Nord\Lumen\Doctrine\ORM\Traits\SoftDeletes;
 
+/**
+ * Class TrashedFilterTest.
+ *
+ * @package Nord\Lumen\Doctrine\ORM\Test
+ */
 class TrashedFilterTest extends \Codeception\TestCase\Test
 {
     use \Codeception\Specify;
@@ -42,9 +46,13 @@ class TrashedFilterTest extends \Codeception\TestCase\Test
         $targetTableAlias = __DIR__;
         $this->classMetadata->rootEntityName = 'stdClass';
 
-        $this->specify('verify returns correct query for filtering', function() use ($targetTableAlias) {
-            verify($this->trashedFilter->addFilterConstraint($this->classMetadata, $targetTableAlias))->equals('');
-        });
+        $this->specify(
+            'TrashedFilter::addFilterConstraint() returns correct query for filtering',
+            function () use ($targetTableAlias) {
+                verify($this->trashedFilter->addFilterConstraint($this->classMetadata, $targetTableAlias))
+                    ->equals('');
+            }
+        );
     }
 
     public function testAddFilterConstraintShouldReturnCorrectQuery()
@@ -52,8 +60,12 @@ class TrashedFilterTest extends \Codeception\TestCase\Test
         $targetTableAlias = __DIR__;
         $this->classMetadata->rootEntityName = '\Nord\Lumen\Doctrine\ORM\Test\FooEntityClass';
 
-        $this->specify('verify returns correct query', function() use ($targetTableAlias) {
-            verify($this->trashedFilter->addFilterConstraint($this->classMetadata, $targetTableAlias))->equals("({$targetTableAlias}.deleted_at IS NULL OR {$targetTableAlias}.deleted_at > NOW())");
-        });
+        $this->specify(
+            'TrashedFilter::addFilterConstraint() returns correct query',
+            function () use ($targetTableAlias) {
+                verify($this->trashedFilter->addFilterConstraint($this->classMetadata, $targetTableAlias))
+                    ->equals("({$targetTableAlias}.deleted_at IS NULL OR {$targetTableAlias}.deleted_at > NOW())");
+            }
+        );
     }
 }

@@ -37,28 +37,34 @@ class SqlAdapterTest extends \Codeception\TestCase\Test
      */
     private $dummyConfiguration;
 
-    protected function _before()
+    /**
+     * @inheritdoc
+     */
+    protected function setup()
     {
         $this->sqlAdapter = new SqlAdapter();
 
         $this->fillExpectedConfigurationArray();
     }
 
-    protected function _after()
+    /**
+     * @inheritdoc
+     */
+    protected function tearDown()
     {
         $this->sqlAdapter = null;
     }
 
     public function testAssertInstanceOfSqlAdapter()
     {
-        $this->specify('verify SqlAdapter is instance of \SqlAdapter', function() {
+        $this->specify('SqlAdapter is instance of \SqlAdapter', function () {
             verify($this->sqlAdapter)->isInstanceOf(SqlAdapter::class);
         });
     }
 
     public function testMapReturnsCorrectConfiguration()
     {
-        $this->specify('verify SqlAdapter::map mathod returns correct configuration', function() {
+        $this->specify('SqlAdapter::map method returns correct configuration', function () {
             verify($this->sqlAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
         });
     }
