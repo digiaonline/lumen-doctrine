@@ -46,7 +46,16 @@ class SqliteAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testMapReturnsCorrectConfiguration()
     {
+        $this->fillExpectedConfigurationArray();
+
         $this->specify('verify SqliteAdapter::map method returns correct configuration', function() {
+            verify($this->sqliteAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
+        });
+    }
+
+    public function testMapReturnsCorrectConfigurationWithInMemoryDatabase()
+    {
+        $this->specify('verify SqliteAdapter::map method returns correct configuration with in memory database', function() {
             verify($this->sqliteAdapter->map($this->dummyConfiguration))->equals($this->expectedConfiguration);
         });
     }
@@ -75,14 +84,17 @@ class SqliteAdapterTest extends \PHPUnit_Framework_TestCase
             'user'     => $this->dummyConfiguration['username'],
             'password' => $this->dummyConfiguration['password'],
             'prefix'   => $this->dummyConfiguration['prefix'],
+            'path'     => $this->dummyConfiguration['database'],
         ];
+    }
 
-        $this->expectedConfiguration['path'] = $this->dummyConfiguration['database'];
-
-        if (':memory:' === $this->dummyConfiguration['database']) {
-            unset($this->expectedConfiguration['path']);
-
-            $this->expectedConfiguration['memory'] = true;
-        }
+    /**
+     * Set the database strategy as memory in the expected configuration
+     */
+    protected function setInMemoryDatabase()
+    {
+        $this->dummyConfiguration['database'] = ':memory:';
+        unset($this->expectedConfiguration['path']);
+        $this->expectedConfiguration['memory'] = true;
     }
 }
