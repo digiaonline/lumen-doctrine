@@ -1,8 +1,11 @@
 <?php
 
+namespace Nord\Lumen\Doctrine\ORM\Test;
+
+use Illuminate\Support;
 use Nord\Lumen\Doctrine\ORM\Configuration\SqlAdapter;
 
-class SqlAdapterTest extends \PHPUnit_Framework_TestCase
+class SqlAdapterTest extends \Codeception\TestCase\Test
 {
     use \Codeception\Specify;
 
@@ -34,14 +37,14 @@ class SqlAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private $dummyConfiguration;
 
-    protected function setUp()
+    protected function _before()
     {
         $this->sqlAdapter = new SqlAdapter();
 
         $this->fillExpectedConfigurationArray();
     }
 
-    protected function tearDown()
+    protected function _after()
     {
         $this->sqlAdapter = null;
     }

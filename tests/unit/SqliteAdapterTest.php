@@ -1,10 +1,12 @@
 <?php
 
+namespace Nord\Lumen\Doctrine\ORM\Test;
+
 use Nord\Lumen\Doctrine\ORM\Configuration\SqliteAdapter;
 
-class SqliteAdapterTest extends \PHPUnit_Framework_TestCase
+class SqliteAdapterTest extends \Codeception\TestCase\Test
 {
-    use Codeception\Specify;
+    use \Codeception\Specify;
 
     /**
      * @var SqliteAdapter
@@ -25,7 +27,7 @@ class SqliteAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private $dummyConfiguration;
 
-    protected function setUp()
+    protected function setup()
     {
         $this->sqliteAdapter = new SqliteAdapter();
 
