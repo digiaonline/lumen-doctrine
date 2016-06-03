@@ -1,6 +1,7 @@
 # Lumen Doctrine ORM
 
 [![Code Climate](https://codeclimate.com/github/nordsoftware/lumen-doctrine/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/lumen-doctrine)
+[![StyleCI](https://styleci.io/repos/35571355/shield?style=flat)](https://styleci.io/repos/35571355)
 [![Latest Stable Version](https://poser.pugx.org/nordsoftware/lumen-doctrine/version)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
 [![Total Downloads](https://poser.pugx.org/nordsoftware/lumen-doctrine/downloads)](https://packagist.org/packages/nordsoftware/lumen-doctrine)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
