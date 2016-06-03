@@ -12,7 +12,7 @@ class TrashedFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if ( ! $this->isSoftDeletable($targetEntity->rootEntityName)) {
+        if (! $this->isSoftDeletable($targetEntity->rootEntityName)) {
             return '';
         }
 

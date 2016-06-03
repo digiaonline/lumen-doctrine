@@ -1,6 +1,6 @@
 <?php namespace Nord\Lumen\Doctrine\ORM\Traits;
 
-use Doctrine\ORM\Mapping AS ORM;
+use Doctrine\ORM\Mapping as ORM;
 use Carbon\Carbon;
 
 trait Timestamps

@@ -18,7 +18,6 @@ use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter;
 
 class DoctrineServiceProvider extends ServiceProvider
 {
-
     const CONFIG_KEY = 'doctrine';
 
     const METADATA_ANNOTATIONS = 'annotations';
