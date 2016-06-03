@@ -8,7 +8,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function classToTableName($className)
+    public function classToTableName($className)
     {
         return str_plural($this->normalizeClassName($className));
     }
@@ -17,7 +17,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function propertyToColumnName($propertyName, $className = null)
+    public function propertyToColumnName($propertyName, $className = null)
     {
         return snake_case($propertyName);
     }
@@ -26,7 +26,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function embeddedFieldToColumnName($propertyName, $embeddedColumnName, $className = null, $embeddedClassName = null)
+    public function embeddedFieldToColumnName($propertyName, $embeddedColumnName, $className = null, $embeddedClassName = null)
     {
         return $propertyName . '_' . $embeddedColumnName;
     }
@@ -35,7 +35,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function referenceColumnName()
+    public function referenceColumnName()
     {
         return 'id';
     }
@@ -44,7 +44,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function joinColumnName($propertyName)
+    public function joinColumnName($propertyName)
     {
         return snake_case(str_singular($propertyName)) . '_' . $this->referenceColumnName();
     }
@@ -53,7 +53,7 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function joinTableName($sourceEntity, $targetEntity, $propertyName = null)
+    public function joinTableName($sourceEntity, $targetEntity, $propertyName = null)
     {
         return $this->normalizeClassName($sourceEntity) . '_' . $this->normalizeClassName($targetEntity);
     }
@@ -62,9 +62,9 @@ class NamingStrategy implements NamingStrategyContract
     /**
      * @inheritdoc
      */
-    function joinKeyColumnName($entityName, $referencedColumnName = null)
+    public function joinKeyColumnName($entityName, $referencedColumnName = null)
     {
-        return $this->normalizeClassName($entityName) . '_' . ( $referencedColumnName ?: $this->referenceColumnName() );
+        return $this->normalizeClassName($entityName) . '_' . ($referencedColumnName ?: $this->referenceColumnName());
     }
 
 

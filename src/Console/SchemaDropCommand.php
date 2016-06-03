@@ -55,4 +55,3 @@ class SchemaDropCommand extends DoctrineSchemaCommand
         ];
     }
 }
-

@@ -22,7 +22,7 @@ class SoftDeletesListener
         $unitOfWork    = $entityManager->getUnitOfWork();
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
-            if ( ! $this->isSoftDeletable($entity)) {
+            if (! $this->isSoftDeletable($entity)) {
                 continue;
             }
 
