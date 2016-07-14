@@ -1,15 +1,15 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Configuration;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Configuration;
 
 use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter;
 
 class ConnectionConfiguration
 {
-
     /**
      * @var ConfigurationAdapter
      */
     private $adapter;
-
 
     /**
      * ConnectionConfiguration constructor.
@@ -20,7 +20,6 @@ class ConnectionConfiguration
     {
         $this->adapter = $adapter;
     }
-
 
     /**
      * @param array $config

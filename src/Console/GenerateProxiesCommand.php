@@ -1,8 +1,9 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 class GenerateProxiesCommand extends DoctrineCommand
 {
-
     /**
      * @var string
      */
@@ -13,22 +14,21 @@ class GenerateProxiesCommand extends DoctrineCommand
      */
     protected $description = 'Generates proxies for entities.';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function fire()
     {
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
-        if (empty( $metadata )) {
+        if (empty($metadata)) {
             $this->error('No metadata found.');
             exit;
         }
 
         $directory = array_get($this->laravel['config'], 'doctrine.proxy.directory');
 
-        if ( ! $directory) {
+        if (!$directory) {
             $this->error('Proxy directory must be set.');
             exit;
         }

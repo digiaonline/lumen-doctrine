@@ -1,10 +1,11 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 
 class SchemaDropCommand extends DoctrineSchemaCommand
 {
-
     /**
      * @var string
      */
@@ -15,14 +16,14 @@ class SchemaDropCommand extends DoctrineSchemaCommand
      */
     protected $description = 'Drop database schema';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     public function fire()
     {
-        $tool     = $this->getSchemaTool();
+        $tool = $this->getSchemaTool();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
         $sql = $tool->getDropSchemaSQL($metadata);
@@ -38,12 +39,11 @@ class SchemaDropCommand extends DoctrineSchemaCommand
         $tool->dropSchema($metadata);
 
         if ($this->option('sql')) {
-            $this->info(implode(';' . PHP_EOL, $sql));
+            $this->info(implode(';'.PHP_EOL, $sql));
         }
 
         $this->info('Schema dropped!');
     }
-
 
     /**
      * @return array
@@ -55,4 +55,3 @@ class SchemaDropCommand extends DoctrineSchemaCommand
         ];
     }
 }
-

@@ -1,8 +1,9 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Contracts;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Contracts;
 
 interface ConfigurationAdapter
 {
-
     /**
      * @param array $config
      *

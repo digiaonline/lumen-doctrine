@@ -1,4 +1,6 @@
-<?php namespace Nord\Lumen\Doctrine\ORM;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\EventManager;
@@ -18,21 +20,19 @@ use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter;
 
 class DoctrineServiceProvider extends ServiceProvider
 {
-
     const CONFIG_KEY = 'doctrine';
 
     const METADATA_ANNOTATIONS = 'annotations';
-    const METADATA_XML         = 'xml';
-    const METADATA_YAML        = 'yaml';
+    const METADATA_XML = 'xml';
+    const METADATA_YAML = 'yaml';
 
-    const DRIVER_MYSQL  = 'mysql';
-    const DRIVER_PGSQL  = 'pgsql';
+    const DRIVER_MYSQL = 'mysql';
+    const DRIVER_PGSQL = 'pgsql';
     const DRIVER_SQLSRV = 'sqlsrv';
     const DRIVER_SQLITE = 'sqlite';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -42,7 +42,6 @@ class DoctrineServiceProvider extends ServiceProvider
         $this->registerFacades();
         $this->registerCommands();
     }
-
 
     /**
      * Registers container bindings.
@@ -59,7 +58,6 @@ class DoctrineServiceProvider extends ServiceProvider
         $container->alias('Doctrine\ORM\EntityManager', 'Doctrine\ORM\EntityManagerInterface');
     }
 
-
     /**
      * Registers facades.
      */
@@ -67,7 +65,6 @@ class DoctrineServiceProvider extends ServiceProvider
     {
         class_alias('Nord\Lumen\Doctrine\ORM\Facades\EntityManager', 'EntityManager');
     }
-
 
     /**
      * Registers console commands.
@@ -83,15 +80,15 @@ class DoctrineServiceProvider extends ServiceProvider
         ]);
     }
 
-
     /**
      * Creates the Doctrine entity manager instance.
      *
      * @param ConfigRepository $config
      *
-     * @return EntityManager
      * @throws Exception
      * @throws \Doctrine\ORM\ORMException
+     *
+     * @return EntityManager
      */
     protected function createEntityManager(ConfigRepository $config)
     {
@@ -108,10 +105,10 @@ class DoctrineServiceProvider extends ServiceProvider
 
         $connectionConfig = $this->createConnectionConfig($doctrineConfig, $databaseConfig);
 
-        $type              = array_get($doctrineConfig, 'mapping', self::METADATA_ANNOTATIONS);
-        $paths             = array_get($doctrineConfig, 'paths', [base_path('app/Entities')]);
-        $debug             = $config['app.debug'];
-        $proxyDir          = array_get($doctrineConfig, 'proxy.directory');
+        $type = array_get($doctrineConfig, 'mapping', self::METADATA_ANNOTATIONS);
+        $paths = array_get($doctrineConfig, 'paths', [base_path('app/Entities')]);
+        $debug = $config['app.debug'];
+        $proxyDir = array_get($doctrineConfig, 'proxy.directory');
         $simpleAnnotations = array_get($doctrineConfig, 'simple_annotations', false);
 
         $metadataConfiguration = $this->createMetadataConfiguration($type, $paths, $debug, $proxyDir, null,
@@ -119,7 +116,7 @@ class DoctrineServiceProvider extends ServiceProvider
 
         $this->configureMetadataConfiguration($metadataConfiguration, $doctrineConfig);
 
-        $eventManager = new EventManager;
+        $eventManager = new EventManager();
 
         $this->configureEventManager($doctrineConfig, $eventManager);
 
@@ -130,19 +127,19 @@ class DoctrineServiceProvider extends ServiceProvider
         return $entityManager;
     }
 
-
     /**
      * Creates the Doctrine connection configuration.
      *
      * @param array $doctrineConfig
      * @param array $databaseConfig
      *
-     * @return array
      * @throws Exception
+     *
+     * @return array
      */
     protected function createConnectionConfig(array $doctrineConfig, array $databaseConfig)
     {
-        $connectionName   = array_get($doctrineConfig, 'connection', $databaseConfig['default']);
+        $connectionName = array_get($doctrineConfig, 'connection', $databaseConfig['default']);
         $connectionConfig = array_get($databaseConfig['connections'], $connectionName);
 
         if ($connectionConfig === null) {
@@ -152,14 +149,14 @@ class DoctrineServiceProvider extends ServiceProvider
         return $this->normalizeConnectionConfig($connectionConfig);
     }
 
-
     /**
      * Normalizes the connection config to a format Doctrine can use.
      *
      * @param array $config
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     protected function normalizeConnectionConfig(array $config)
     {
@@ -170,12 +167,12 @@ class DoctrineServiceProvider extends ServiceProvider
         return $configuration->map($config);
     }
 
-
     /**
      * @param string $driver
      *
-     * @return ConfigurationAdapter
      * @throws Exception
+     *
+     * @return ConfigurationAdapter
      */
     protected function createConfigurationAdapter($driver)
     {
@@ -191,7 +188,6 @@ class DoctrineServiceProvider extends ServiceProvider
         }
     }
 
-
     /**
      * Creates the metadata configuration instance.
      *
@@ -202,8 +198,9 @@ class DoctrineServiceProvider extends ServiceProvider
      * @param Cache  $cache
      * @param bool   $useSimpleAnnotationReader
      *
-     * @return Configuration
      * @throws \Exception
+     *
+     * @return Configuration
      */
     protected function createMetadataConfiguration(
         $type,
@@ -225,7 +222,6 @@ class DoctrineServiceProvider extends ServiceProvider
                 throw new Exception("Metadata type '$type' is not supported.");
         }
     }
-
 
     /**
      * Configures the metadata configuration instance.
@@ -258,9 +254,8 @@ class DoctrineServiceProvider extends ServiceProvider
         }
 
         $namingStrategy = array_get($doctrineConfig, 'naming_strategy', 'Nord\Lumen\Doctrine\ORM\NamingStrategy');
-        $configuration->setNamingStrategy(new $namingStrategy);
+        $configuration->setNamingStrategy(new $namingStrategy());
     }
-
 
     /**
      * Configures the Doctrine event manager instance.
@@ -272,11 +267,10 @@ class DoctrineServiceProvider extends ServiceProvider
     {
         if (isset($doctrineConfig['event_listeners'])) {
             foreach ($doctrineConfig['event_listeners'] as $name => $listener) {
-                $eventManager->addEventListener($listener['events'], new $listener['class']);
+                $eventManager->addEventListener($listener['events'], new $listener['class']());
             }
         }
     }
-
 
     /**
      * Configures the Doctrine entity manager instance.

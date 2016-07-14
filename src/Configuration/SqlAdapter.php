@@ -1,12 +1,13 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Configuration;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Configuration;
 
 use Nord\Lumen\Doctrine\ORM\Contracts\ConfigurationAdapter as ConfigurationAdapterContract;
 
 class SqlAdapter implements ConfigurationAdapterContract
 {
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function map(array $config)
     {
@@ -21,7 +22,6 @@ class SqlAdapter implements ConfigurationAdapterContract
             'prefix'   => array_get($config, 'prefix'),
         ];
     }
-
 
     /**
      * @param $driver

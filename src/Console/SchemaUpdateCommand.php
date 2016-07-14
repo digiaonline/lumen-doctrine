@@ -1,10 +1,11 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 
 class SchemaUpdateCommand extends DoctrineSchemaCommand
 {
-
     /**
      * @var string
      */
@@ -15,13 +16,12 @@ class SchemaUpdateCommand extends DoctrineSchemaCommand
      */
     protected $description = 'Update database schema to match entities';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function fire()
     {
-        $tool     = $this->getSchemaTool();
+        $tool = $this->getSchemaTool();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
         $sql = $tool->getUpdateSchemaSql($metadata);
@@ -37,12 +37,11 @@ class SchemaUpdateCommand extends DoctrineSchemaCommand
         $tool->updateSchema($metadata);
 
         if ($this->option('sql')) {
-            $this->info(implode(';' . PHP_EOL, $sql));
+            $this->info(implode(';'.PHP_EOL, $sql));
         }
 
         $this->info('Schema updated!');
     }
-
 
     /**
      * @return array

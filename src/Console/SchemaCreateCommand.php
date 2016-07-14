@@ -1,10 +1,11 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 
 class SchemaCreateCommand extends DoctrineSchemaCommand
 {
-
     /**
      * @var string
      */
@@ -15,14 +16,14 @@ class SchemaCreateCommand extends DoctrineSchemaCommand
      */
     protected $description = 'Create database schema from entities';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     public function fire()
     {
-        $tool     = $this->getSchemaTool();
+        $tool = $this->getSchemaTool();
         $metadata = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
         $sql = $tool->getCreateSchemaSql($metadata);
@@ -38,12 +39,11 @@ class SchemaCreateCommand extends DoctrineSchemaCommand
         $tool->createSchema($metadata);
 
         if ($this->option('sql')) {
-            $this->info(implode(';' . PHP_EOL, $sql));
+            $this->info(implode(';'.PHP_EOL, $sql));
         }
 
         $this->info('Schema created!');
     }
-
 
     /**
      * @return array

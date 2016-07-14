@@ -1,4 +1,6 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
@@ -7,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 class FixturesLoadCommand extends DoctrineCommand
 {
-
     /**
      * @var string
      */
@@ -18,9 +19,8 @@ class FixturesLoadCommand extends DoctrineCommand
      */
     protected $description = 'Loads data fixtures into the database';
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function fire()
     {
@@ -32,13 +32,12 @@ class FixturesLoadCommand extends DoctrineCommand
 
         $fixtures = $loader->getFixtures();
 
-        $purger   = new ORMPurger();
+        $purger = new ORMPurger();
         $executor = new ORMExecutor($this->getEntityManager(), $purger);
         $executor->execute($fixtures, $this->option('append'));
 
         $this->info('Fixtures loaded!');
     }
-
 
     /**
      * @return array
