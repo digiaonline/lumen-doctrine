@@ -14,7 +14,6 @@ trait SoftDeletes
      */
     private $deletedAt;
 
-
     public function trash()
     {
         if ($this->isDeleted()) {
