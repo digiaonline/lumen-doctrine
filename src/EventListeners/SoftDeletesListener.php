@@ -1,7 +1,7 @@
 <?php namespace Nord\Lumen\Doctrine\ORM\EventListeners;
 
+use Carbon\Carbon;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Jenssegers\Date\Date;
 use Nord\Lumen\Doctrine\ORM\Traits\SoftDeletes;
 
 class SoftDeletesListener
@@ -34,7 +34,7 @@ class SoftDeletesListener
                 continue;
             }
 
-            $newValue = Date::now();
+            $newValue = Carbon::now();
 
             $metadata->setFieldValue($entity, $this->propertyName, $newValue);
 
