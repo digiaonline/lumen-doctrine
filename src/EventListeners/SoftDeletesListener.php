@@ -1,4 +1,6 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\EventListeners;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\EventListeners;
 
 use Carbon\Carbon;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -6,12 +8,10 @@ use Nord\Lumen\Doctrine\ORM\Traits\SoftDeletes;
 
 class SoftDeletesListener
 {
-
     /**
      * @var string
      */
     private $propertyName = 'deletedAt';
-
 
     /**
      * @param OnFlushEventArgs $args
@@ -19,10 +19,10 @@ class SoftDeletesListener
     public function onFlush(OnFlushEventArgs $args)
     {
         $entityManager = $args->getEntityManager();
-        $unitOfWork    = $entityManager->getUnitOfWork();
+        $unitOfWork = $entityManager->getUnitOfWork();
 
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entity) {
-            if ( ! $this->isSoftDeletable($entity)) {
+            if (!$this->isSoftDeletable($entity)) {
                 continue;
             }
 
@@ -44,7 +44,6 @@ class SoftDeletesListener
             $unitOfWork->scheduleExtraUpdate($entity, [$this->propertyName => [$oldValue, $newValue]]);
         }
     }
-
 
     /**
      * @param mixed $entity

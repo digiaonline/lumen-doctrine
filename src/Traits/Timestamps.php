@@ -1,11 +1,12 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Traits;
+<?php
 
-use Doctrine\ORM\Mapping AS ORM;
+namespace Nord\Lumen\Doctrine\ORM\Traits;
+
 use Carbon\Carbon;
+use Doctrine\ORM\Mapping as ORM;
 
 trait Timestamps
 {
-
     /**
      * @ORM\Column(type="datetime", name="created_at")
      *
@@ -20,7 +21,6 @@ trait Timestamps
      */
     private $updatedAt;
 
-
     /**
      * @ORM\PrePersist
      */
@@ -28,7 +28,6 @@ trait Timestamps
     {
         $this->createdAt = Carbon::now();
     }
-
 
     /**
      * @ORM\PreUpdate
@@ -38,7 +37,6 @@ trait Timestamps
         $this->updatedAt = Carbon::now();
     }
 
-
     /**
      * @return Carbon
      */
@@ -46,7 +44,6 @@ trait Timestamps
     {
         return $this->createdAt;
     }
-
 
     /**
      * @return Carbon
@@ -56,17 +53,13 @@ trait Timestamps
         return $this->updatedAt;
     }
 
-
     /**
-     *
-     *
      * @return int
      */
     public function getCreatedAtTimestamp()
     {
         return $this->createdAt->getTimestamp();
     }
-
 
     /**
      * @return int|null

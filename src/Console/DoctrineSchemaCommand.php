@@ -1,17 +1,16 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Console;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Console;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Tools\SchemaTool;
 
 abstract class DoctrineSchemaCommand extends DoctrineCommand
 {
-
     /**
      * @var SchemaTool
      */
     private $schemaTool;
-
 
     /**
      * DoctrineCommand constructor.
@@ -25,7 +24,6 @@ abstract class DoctrineSchemaCommand extends DoctrineCommand
 
         $this->schemaTool = $schemaTool;
     }
-
 
     /**
      * @return SchemaTool

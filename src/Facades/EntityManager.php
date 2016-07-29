@@ -1,12 +1,13 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Facades;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 class EntityManager extends Facade
 {
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected static function getFacadeAccessor()
     {

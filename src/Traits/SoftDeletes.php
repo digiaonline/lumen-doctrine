@@ -1,11 +1,12 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Traits;
+<?php
 
-use Doctrine\ORM\Mapping AS ORM;
+namespace Nord\Lumen\Doctrine\ORM\Traits;
+
 use Carbon\Carbon;
+use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeletes
 {
-
     /**
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      *
@@ -13,10 +14,6 @@ trait SoftDeletes
      */
     private $deletedAt;
 
-
-    /**
-     *
-     */
     public function trash()
     {
         if ($this->isDeleted()) {
@@ -26,7 +23,6 @@ trait SoftDeletes
         $this->deletedAt = Carbon::now();
     }
 
-
     /**
      * @return mixed
      */
@@ -35,7 +31,6 @@ trait SoftDeletes
         return $this->deletedAt;
     }
 
-
     /**
      * @return int|null
      */
@@ -43,7 +38,6 @@ trait SoftDeletes
     {
         return $this->deletedAt instanceof Carbon ? $this->deletedAt->getTimestamp() : null;
     }
-
 
     /**
      * @return bool

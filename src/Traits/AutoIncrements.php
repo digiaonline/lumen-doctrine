@@ -1,10 +1,11 @@
-<?php namespace Nord\Lumen\Doctrine\ORM\Traits;
+<?php
+
+namespace Nord\Lumen\Doctrine\ORM\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
 trait AutoIncrements
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
