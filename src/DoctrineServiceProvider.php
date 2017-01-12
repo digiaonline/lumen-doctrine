@@ -64,7 +64,9 @@ class DoctrineServiceProvider extends ServiceProvider
      */
     protected function registerFacades()
     {
-        class_alias('Nord\Lumen\Doctrine\ORM\Facades\EntityManager', 'EntityManager');
+        if (!class_exists('EntityManager')) {
+            class_alias('Nord\Lumen\Doctrine\ORM\Facades\EntityManager', 'EntityManager');
+        }
     }
 
 
